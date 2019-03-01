@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Collections.Concurrent;
 
 namespace DataTableToList
 {
@@ -70,9 +69,13 @@ namespace DataTableToList
         /// <typeparam name="T">返回的实体类型</typeparam>
         /// <param name="assembly">待转换数据的元数据信息</param>
         /// <returns>实体对象</returns>
-        private static DynamicMethod BuildMethod<T>(AssembleInfo assembly, MapColumn[] mapColumns = null)
+        private static DynamicMethod BuildMethod<T>(AssembleInfo assembly, MapColumn[] mapColumns = null, string methodName="")
         {
-            DynamicMethod method = new DynamicMethod(assembly.MethodName + typeof(T).Name, MethodAttributes.Public | MethodAttributes.Static, CallingConventions.Standard, typeof(T),
+            if(methodName==null)
+            {
+                methodName = "";
+            }
+            DynamicMethod method = new DynamicMethod(methodName+assembly.MethodName + typeof(T).Name, MethodAttributes.Public | MethodAttributes.Static, CallingConventions.Standard, typeof(T),
                     new Type[] { assembly.SourceType }, typeof(EntityContext).Module, true);
             ILGenerator generator = method.GetILGenerator();
             LocalBuilder result = generator.DeclareLocal(typeof(T));
@@ -227,7 +230,7 @@ namespace DataTableToList
                     key = key + dataRowAssembly.MethodName + typeof(T).FullName;
                 }
             }
-            LoadDataRow<T> load = (LoadDataRow<T>)BuildMethod<T>(dataRowAssembly, mapColumns).CreateDelegate(typeof(LoadDataRow<T>));
+            LoadDataRow<T> load = (LoadDataRow<T>)BuildMethod<T>(dataRowAssembly, mapColumns,key).CreateDelegate(typeof(LoadDataRow<T>));
             if (key != null)
             {
                 ConvertCache<string, object>.Singleton.Set(key, load);
@@ -280,7 +283,7 @@ namespace DataTableToList
                 }
                 key = key + dataRecordAssembly.MethodName + typeof(T).FullName;
             }
-            LoadDataRecord<T> load = (LoadDataRecord<T>)BuildMethod<T>(dataRecordAssembly, mapColumns).CreateDelegate(typeof(LoadDataRecord<T>));
+            LoadDataRecord<T> load = (LoadDataRecord<T>)BuildMethod<T>(dataRecordAssembly, mapColumns,key).CreateDelegate(typeof(LoadDataRecord<T>));
             if (key != null)
             {
                 ConvertCache<string, object>.Singleton.Set(key, load);
