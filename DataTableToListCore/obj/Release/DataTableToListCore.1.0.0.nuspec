@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DataTableToListCore</id>
+    <version>1.0.0</version>
+    <authors>jinyu成都</authors>
+    <owners>jinyu成都</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/jinyuttt/DataTableToList.git</projectUrl>
+    <description>采用emit将DataTable,IDataReader转List，个人贡献，希望保留住宿</description>
+    <releaseNotes>采用emit将DataTable,IDataReader转List</releaseNotes>
+    <dependencies>
+      <group targetFramework=".NETCoreApp2.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="E:\Study\vs\Test\DataTableToList\DataTableToListCore\bin\Release\netcoreapp2.1\DataTableToListCore.dll" target="lib\netcoreapp2.1\DataTableToListCore.dll" />
+  </files>
+</package>
